@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">EqualShare</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="new_person">Nova Oseba</string>
+    <string name="new_expence">Nov strosek</string>
+    <string name="title_activity_add_new_expence">AddNewExpenceActivity</string>
+    <string name="new_expence_holder_label">Strosek je placal</string>
+    <string name="new_expence_expence_label">Strosek</string>
+    <string name="button_insert">Vnos</string>
+</resources>
