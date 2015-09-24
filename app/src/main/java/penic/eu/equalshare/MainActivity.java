@@ -10,13 +10,17 @@ import android.widget.ListView;
 import android.view.View.OnClickListener;
 import java.util.ArrayList;
 import android.widget.ArrayAdapter;
+import android.content.Intent;
+import java.io.Serializable;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     String people_names[]={"Ales", "Samo"};
-    final ArrayList<String> list = new ArrayList<String>();
     ListView list_people;
+
+    DataObj berkiList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,28 +30,31 @@ public class MainActivity extends AppCompatActivity {
         Button new_expence=(Button) findViewById(R.id.button2);
         list_people= (ListView) findViewById(R.id.listView);
 
+        berkiList=new DataObj();
+
     for (int i = 0; i < people_names.length; ++i) {
-      list.add(people_names[i]);
+      berkiList.name.add(people_names[i]);
     }
     final ArrayAdapter adapter = new ArrayAdapter(this,
-        android.R.layout.simple_list_item_1, list);
+        android.R.layout.simple_list_item_1, berkiList.name);
     list_people.setAdapter(adapter);
 
         new_person.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 //ListView list_people= (ListView) v.findViewById(R.id.listView);
-                list.add("Nekdo nov");
+                berkiList.name.add("Nekdo nov");
                 list_people.setAdapter(adapter);
-
             }
         });
 
-        new_expence.setOnClickListener((OnClickListener) new AddNewExpenceActivity());
+        new_expence.setOnClickListener(this);
 
     }
 
+    public void test_function(){
 
+    }
 
 
 
@@ -71,5 +78,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+/** In the following function we handle the button clicks. **/
+    @Override
+    public void onClick(View v) {
+        ListView people=(ListView) v.findViewById(R.id.listView);
+        Intent intent = new Intent(v.getContext(),AddNewExpenceActivity.class);
+        intent.putExtra("people_list", berkiList.name);
+        startActivityForResult(intent, 1);
+    }
+
+
+     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+             if(resultCode == RESULT_OK && requestCode== 1){
+                 //Calculate new expences...
+                    int index=data.getIntExtra("payedBy",0);
+                 berkiList.totalPaid.set( index,berkiList.totalPaid.get(index)
+                         +data.getFloatExtra("value",0));
+             }
     }
 }

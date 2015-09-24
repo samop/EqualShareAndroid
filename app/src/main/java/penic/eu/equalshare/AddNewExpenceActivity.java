@@ -1,16 +1,43 @@
 package penic.eu.equalshare;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.view.View;
+import java.util.ArrayList;
+import android.view.View.OnClickListener;
 
-public class AddNewExpenceActivity extends AppCompatActivity {
+public class AddNewExpenceActivity extends AppCompatActivity implements OnClickListener {
 
+    Button backButton;
+    EditText expenceValue;
+    Spinner people;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_expence);
+         // 1. get passed intent
+        Intent intent = getIntent();
+        // 2. get list from intent
+        ArrayList<String> people_list= intent.getStringArrayListExtra("people_list");
+
+        //fill data into the Spinner.
+        people= (Spinner) findViewById(R.id.spinner);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+            android.R.layout.simple_list_item_1, people_list);
+        people.setAdapter(adapter);
+
+        backButton=(Button) findViewById(R.id.button3);
+        backButton.setOnClickListener(this);
+
+        expenceValue=(EditText) findViewById(R.id.editText);
+
     }
 
     @Override
@@ -33,5 +60,14 @@ public class AddNewExpenceActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+         Intent returnIntent = new Intent();
+         returnIntent.putExtra("value",expenceValue.toString());
+         returnIntent.putExtra("payedBy", people.getSelectedItemPosition());
+         setResult(RESULT_OK,returnIntent);
+         finish();
     }
 }
