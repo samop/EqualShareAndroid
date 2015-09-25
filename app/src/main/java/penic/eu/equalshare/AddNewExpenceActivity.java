@@ -65,7 +65,7 @@ public class AddNewExpenceActivity extends AppCompatActivity implements OnClickL
     @Override
     public void onClick(View view) {
          Intent returnIntent = new Intent();
-         returnIntent.putExtra("value",expenceValue.toString());
+         returnIntent.putExtra("value",expenceValue.getText().toString());
          returnIntent.putExtra("payedBy", people.getSelectedItemPosition());
          setResult(RESULT_OK,returnIntent);
          finish();

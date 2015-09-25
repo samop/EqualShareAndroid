@@ -11,16 +11,18 @@ import android.view.View.OnClickListener;
 import java.util.ArrayList;
 import android.widget.ArrayAdapter;
 import android.content.Intent;
+import android.widget.Toast;
+
 import java.io.Serializable;
 
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
 
-    String people_names[]={"Ales", "Samo"};
+    //String people_names[]={"Ales", "Samo"};
     ListView list_people;
 
     DataObj berkiList;
-
+    ArrayAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,22 +34,18 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
         berkiList=new DataObj();
 
-    for (int i = 0; i < people_names.length; ++i) {
+   /* for (int i = 0; i < people_names.length; ++i) {
       berkiList.name.add(people_names[i]);
-    }
-    final ArrayAdapter adapter = new ArrayAdapter(this,
+        berkiList.balance.add(0.0f);
+        berkiList.totalPaid.add(0.0f);
+        berkiList.weight.add(1.0f);
+
+    } */
+    adapter = new ArrayAdapter(this,
         android.R.layout.simple_list_item_1, berkiList.name);
     list_people.setAdapter(adapter);
 
-        new_person.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //ListView list_people= (ListView) v.findViewById(R.id.listView);
-                berkiList.name.add("Nekdo nov");
-                list_people.setAdapter(adapter);
-            }
-        });
-
+        new_person.setOnClickListener(this);
         new_expence.setOnClickListener(this);
 
     }
@@ -84,20 +82,42 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 /** In the following function we handle the button clicks. **/
     @Override
     public void onClick(View v) {
-        ListView people=(ListView) v.findViewById(R.id.listView);
-        Intent intent = new Intent(v.getContext(),AddNewExpenceActivity.class);
-        intent.putExtra("people_list", berkiList.name);
-        startActivityForResult(intent, 1);
+        if(v.getId()==R.id.button2) {
+            ListView people = (ListView) v.findViewById(R.id.listView);
+            Intent intent = new Intent(v.getContext(), AddNewExpenceActivity.class);
+            intent.putExtra("people_list", berkiList.name);
+            startActivityForResult(intent, 1);
+        } else if(v.getId()==R.id.button){
+            Intent intent = new Intent(v.getContext(), AddNewPersonActivity.class);
+            startActivityForResult(intent, 2);
+        }
     }
 
 
      protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-             if(resultCode == RESULT_OK && requestCode== 1){
-                 //Calculate new expences...
-                    int index=data.getIntExtra("payedBy",0);
-                 berkiList.totalPaid.set( index,berkiList.totalPaid.get(index)
-                         +data.getFloatExtra("value",0));
+             if(resultCode == RESULT_OK) {
+                 if (requestCode == 1) {
+
+                     //Calculate new expences...
+                     int index = data.getIntExtra("payedBy", 0);
+                     float value = Float.parseFloat(data.getStringExtra("value"));
+                     //Toast.makeText(MainActivity.this, "payedBy="+index+", value="+value, Toast.LENGTH_SHORT).show();
+                     berkiList.totalPaid.set(index, berkiList.totalPaid.get(index)
+                             + value);
+                     //recalculate balance
+                     berkiList.calc();
+                 } else if (requestCode == 2) {
+                     String name=data.getStringExtra("name");
+                     float weight=Float.parseFloat(data.getStringExtra("weight"));
+                     berkiList.name.add(name);
+                     berkiList.weight.add(weight);
+                     berkiList.balance.add(0.0f);
+                     berkiList.totalPaid.add(0.0f);
+                     berkiList.calc();
+                     list_people.setAdapter(adapter);
+
+                 }
              }
     }
 }

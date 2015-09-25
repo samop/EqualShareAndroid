@@ -9,4 +9,7 @@
     <string name="new_expence_holder_label">Strosek je placal</string>
     <string name="new_expence_expence_label">Strosek</string>
     <string name="button_insert">Vnos</string>
+    <string name="title_activity_add_new_person">AddNewPersonActivity</string>
+    <string name="personName">Ime</string>
+    <string name="weightLabel">Utez</string>
 </resources>

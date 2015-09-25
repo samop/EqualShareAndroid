@@ -17,7 +17,7 @@ public class DataObj {
         weight=new ArrayList<Float>();
         balance=new ArrayList<Float>();
     }
-    
+
     public void calc(){
         float Sx=0.0f;
         float Sw=0.0f;
