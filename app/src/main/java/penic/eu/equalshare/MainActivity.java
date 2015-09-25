@@ -41,8 +41,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         berkiList.weight.add(1.0f);
 
     } */
+        berkiList.updateLabel();
     adapter = new ArrayAdapter(this,
-        android.R.layout.simple_list_item_1, berkiList.name);
+        android.R.layout.simple_list_item_1, berkiList.tempLabel);
     list_people.setAdapter(adapter);
 
         new_person.setOnClickListener(this);
@@ -107,6 +108,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                              + value);
                      //recalculate balance
                      berkiList.calc();
+                     berkiList.updateLabel();
+                     adapter = new ArrayAdapter(this,
+                             android.R.layout.simple_list_item_1, berkiList.tempLabel);
+                     list_people.setAdapter(adapter);
                  } else if (requestCode == 2) {
                      String name=data.getStringExtra("name");
                      float weight=Float.parseFloat(data.getStringExtra("weight"));
@@ -115,6 +120,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                      berkiList.balance.add(0.0f);
                      berkiList.totalPaid.add(0.0f);
                      berkiList.calc();
+                     berkiList.updateLabel();
+                     adapter = new ArrayAdapter(this,
+                             android.R.layout.simple_list_item_1, berkiList.tempLabel);
                      list_people.setAdapter(adapter);
 
                  }

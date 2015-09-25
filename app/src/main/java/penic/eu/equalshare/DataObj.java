@@ -11,6 +11,8 @@ public class DataObj {
 	public ArrayList<Float> weight;
     public ArrayList<Float> balance;
 
+    public ArrayList<String> tempLabel;
+
     public DataObj(){
         name=new ArrayList<String>();
         totalPaid=new ArrayList<Float>();
@@ -30,6 +32,13 @@ public class DataObj {
         c=Sx/Sw;
         for (int k=0;k<totalPaid.size();k++) {
             balance.set(k, (float) (c * weight.get(k) - totalPaid.get(k)));
+        }
+    }
+
+    public void updateLabel(){
+        tempLabel=new ArrayList<String>();
+        for (int k=0;k<totalPaid.size();k++) {
+            tempLabel.add(name.get(k)+"    "+balance.get(k));
         }
     }
 }
